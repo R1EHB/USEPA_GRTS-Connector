@@ -1,0 +1,1 @@
+state;st_prj_no;prj_seq;prj_title;approp_year;total_319_funds;project_dollars;program_dollars;epa_other;other_federal;state_funds;state_in_kind;local_funds;other_funds;local_in_kind;total_budget; description;will_has_load_reductions_ind;huc_8;huc_12;pollutants;n_lbsyr;p_lbsyr;sed_tonsyr;statewide_ind;project_start_date;status;project_link;ws_protect_ind;watershed_plans;grant_no

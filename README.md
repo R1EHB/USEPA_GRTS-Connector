@@ -6,5 +6,11 @@ date: May 8, 2025
 ---
 
 # USEPA_GRTS-Connector #
-Data Connector to the USEPA Data System GRTS (Grants Results and Tracking System) for enhanced analysis.
+Data Connector to the USEPA Data System GRTS (Grants Results and
+Tracking System) for enhanced analysis.
+
+# Disclaimer #
+This is not an official USEPA product. This is an unofficial work of
+USEPA staff.
+
 # See Also #

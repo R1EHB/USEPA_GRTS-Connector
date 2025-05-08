@@ -3,6 +3,7 @@
 *.R~
 *.Rmd~
 *.txt~
+*.md~
 
 # History files
 .Rhistory
