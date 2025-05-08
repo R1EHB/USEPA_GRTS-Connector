@@ -4,27 +4,30 @@ author: beck.erik@epa.gov
 date: May 8, 2025
 ---
 
-
 # Overview #
 
 # Disclaimer #
 * Not an official EPA product
 
+# Notes #
+GPKG file format handling is partially implemented here, but commented out.
+Uncomment if needed. GPKG files are large (8-10 gigabytes in this case), 
+so that functionality here is disabled to save time and bandwidth.
 
+# Setup #
 
-```{r Old-Intro}
+## Libraries ##
+
+```{r Intro}
 ## Get Current Watershed Boundary Dataset and related files to tease
 ## out HUC codes from the USA and surrounding boundary areas (Canada,
 ## Mexico) into a set of spreadsheets
+```
 
+```{r LoadLibs}
 ## Load needed libraries
-
-## Nov 2023: Refactor to replace obsolete rgdal package with sf or terra
-## April 2024: Adding a bit more info on transition to SF
-
 ## st_layers is part of SF package
 
-## April 2025: Minor refinements
 
 if (!require (sf)) {
    install.packages("sf", repos="https://cloud.r-project.org")
@@ -40,51 +43,109 @@ if (!require (tibble)) {
 
 if (!require (gpkg)) {
    install.packages("gpkg", repos="https://cloud.r-project.org")
-   }
+}
+
+if (!require (here)) {
+   install.packages("here", repos="https://cloud.r-project.org")
+}
    
-#library (rgdal)
 library (sf)
 library (curl)
-library(tibble)
-library(gpkg)   
+library (tibble)
+library (gpkg)
+library (here)
+```
+## Working Directories ##
 
+### Existing Directories ###
+
+Using Linux/Unix path notation, the overall project base directory is:
+
+* LOCAL_BASE_DIR='I_Ran_Git_Clone_Here}/USEPA_GRTS-Connector/'
+
+The startup directory for Rstudio, where this file lives is, relative to BASE_DIR:
+* $LOCAL_BASE_DIR/WBD_Retrieval_HUC_Extraction/
+
+The data files will be stored and used from subdirectories off of:
+* $LOCAL_BASE_DIR/Data_IO/
+
+```{r setup}
 # Make and Set Working directory
 
 # Relative to Startup Directory
 
 # Save Current Directory
 
-startup_dir <- getwd()
+## STARTUP_DIR <- getwd()
 
-dir.create ("../DataFetch/")
-dir.create("./HUC-Data-Lists/")
-setwd("../DataFetch/")
+STARTUP_DIR <- here()
 
-# Not right url base for scripting
-# base_dir <- "https://prd-tnm.s3.amazonaws.com/index.html?prefix=StagedProducts/Hydrography/WBD/National"
+## Paths Relative to STARTUP_DIR
 
-base_dir <- "https://prd-tnm.s3.amazonaws.com/StagedProducts/Hydrography/WBD/National"
+
+
+knitr::opts_knit$set(root.dir = STARTUP_DIR)
+
+setwd("..")
+
+LOCAL_BASE_DIR <- getwd()
+DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
+WBD_DATA_DIR <- paste(DATA_ROOT_DIR,'WBD_DATA_DIR/', sep="")
+HUC_REVISION_DIR <- paste (DATA_ROOT_DIR,'2020_HUC_Revision-Concordance/', sep="")
+
+HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+
+print (WBD_DATA_DIR)
+print (HUC_REVISION_DIR)
+print (HUC_OUTPUT_DIR)
+
+```
+
+
+
+
+### Create New Directories ###
+
+
+
+``` {r create-output-dir}
+dir.create (WBD_DATA_DIR)
+dir.create(HUC_OUTPUT_DIR)
+
+```
+
+# Pull in the Data from USGS #
+
+```{r retrieve-data-USGS_AWS}
+setwd(WBD_DATA_DIR)
+
+AWS_base_URL <- "https://prd-tnm.s3.amazonaws.com/StagedProducts/Hydrography/WBD/National"
 
 g_types = c("/GDB/","/GPKG/")
 
+
+## GDB file is about 2.5 Gb
 GDB_fnames <- c("WBD_National_GDB.jpg",
 		"WBD_National_GDB.xml","WBD_National_GDB.zip")
 
-GPKG_fnames <- c("WBD_National_GPKG.jpg",
-		 "WBD_National_GPKG.xml","WBD_National_GPKG.zip")
+## this is really large (2x or 3x size of GDB) so commented out. Uncomment if needed
+## GPKG_fnames <- c("WBD_National_GPKG.jpg",
+	##	 "WBD_National_GPKG.xml","WBD_National_GPKG.zip")
 
 
-str (base_dir)
-str (GPKG_fnames)
+str (AWS_base_URL)
+## str (GPKG_fnames)
 str (GDB_fnames)
 str (g_types)
+```
 
-
+```{r expand-files}
+setwd(WBD_DATA_DIR)
 get_file <- function(base_dir_, g_type_,f_name_) {
   compose_filename <- paste(base_dir_,g_type_,f_name_,sep = "")
   print(compose_filename)
   print(f_name_)
-  
+
   if (!file.exists(f_name_)) {
     download.file(compose_filename, destfile=f_name_, method = "curl")
     # Check to see if it is a zip file; if so, unzip it
@@ -100,35 +161,22 @@ get_file <- function(base_dir_, g_type_,f_name_) {
   
 for (a in  1:3) {
  
-  get_file(base_dir,g_types[1],GDB_fnames[a])
+  get_file(AWS_base_URL,g_types[1],GDB_fnames[a])
     }
 
-for (b in 1:3) {
-  get_file(base_dir,g_types[2],GPKG_fnames[b])
-    }
+## for (b in 1:3) {
+  ## get_file(AWS_base_URL,g_types[2],GPKG_fnames[b])
+    ## }
   
 
 
-# Currently uses a linux system call to unzip
-# system("unzip -n WBD_National_GDB.zip")
 
-# Alternative is 
-# # unzip(zipfile, files = NULL, list = FALSE, overwrite = TRUE,
-# #      junkpaths = FALSE, exdir = ".", unzip = "internal",
-# #      setTimes = FALSE)
+gdb <- path.expand("../Data_IO/WBD_Data_DIR/WBD_National_GDB.gdb")
 
-### From utils library (?)
+print (gdb)
+```
 
-
-gdb <- path.expand("../DataFetch/WBD_National_GDB.gdb")
-
-
-## Layers <- st_layers(gdb)
-
-## print (Layers)
-
-## HUC2 <- st_read(gdb)  ##hu2 layer
-
+```{r create-huc-lists}
 ## Note: HUC14 and HUC16 are experimental for USGS and not widely deployed
 
 ## Cluster the layer read operations by HUC level together
@@ -225,8 +273,7 @@ HUC16DF <- st_drop_geometry(HUC16DF_SF)
 
 ## HUC Area 04 Concordance
 
-
-huc12_fix <- read.csv("./USGS-HUC-Concordance/WBDHU12_Names_Region04-VT_NY_CN-EPAr1-v1.csv",
+huc12_fix <- read.csv("../2020_HUC_Revision-Concordance/WBDHU12_Names_Region04-VT_NY_CN-EPAr1-v1.csv",
 	  colClasses = c(rep("numeric",2),rep("character",2),rep("numeric",4),
 	  	     rep("character",12),rep("numeric",4)))
 
