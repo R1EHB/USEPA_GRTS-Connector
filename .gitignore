@@ -1,3 +1,9 @@
+# Emacs Temp Files
+*.py~
+*.R~
+*.Rmd~
+*.txt~
+
 # History files
 .Rhistory
 .Rapp.history
