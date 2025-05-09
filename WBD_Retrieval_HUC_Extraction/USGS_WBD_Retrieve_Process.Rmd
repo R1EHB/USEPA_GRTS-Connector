@@ -91,7 +91,8 @@ setwd("..")
 LOCAL_BASE_DIR <- getwd()
 DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
 WBD_DATA_DIR <- paste(DATA_ROOT_DIR,'WBD_DATA_DIR/', sep="")
-HUC_REVISION_DIR <- paste (DATA_ROOT_DIR,'2020_HUC_Revision-Concordance/', sep="")
+WBD_GDB_LOC <- paste (DATA_ROOT_DIR,'WBD_DATA_DIR/WBD_National_GDB.gdb', sep="")
+HUC_REVISION_DIR <- paste (LOCAL_BASE_DIR,'/2020_HUC_Revision-Concordance/', sep="")
 
 HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
 
@@ -171,12 +172,13 @@ for (a in  1:3) {
 
 
 
-gdb <- path.expand("../Data_IO/WBD_Data_DIR/WBD_National_GDB.gdb")
+gdb <- path.expand(WBD_GDB_LOC)
 
 print (gdb)
 ```
 
 ```{r create-huc-lists}
+setwd(WBD_DATA_DIR)
 ## Note: HUC14 and HUC16 are experimental for USGS and not widely deployed
 
 ## Cluster the layer read operations by HUC level together
@@ -273,7 +275,9 @@ HUC16DF <- st_drop_geometry(HUC16DF_SF)
 
 ## HUC Area 04 Concordance
 
-huc12_fix <- read.csv("../2020_HUC_Revision-Concordance/WBDHU12_Names_Region04-VT_NY_CN-EPAr1-v1.csv",
+huc12_fix_file <- paste (HUC_REVISION_DIR, "WBDHU12_Names_Region04-VT_NY_CN-EPAr1-v1.csv", sep="")
+
+huc12_fix <- read.csv(huc12_fix_file,
 	  colClasses = c(rep("numeric",2),rep("character",2),rep("numeric",4),
 	  	     rep("character",12),rep("numeric",4)))
 
@@ -295,12 +299,11 @@ HUC12DF <- rbind(HUC12DF,huc12_patch)
 ```{r data-write}
 ## Write CSV Location
 
-## change back to starting directory
-setwd(startup_dir)
+
 
 ## Then change to subdir off starting dir
 
-setwd("./HUC-Data-Lists/")
+setwd(HUC_OUTPUT_DIR)
 
 # Write CSV Files
 write.csv (HUC2DF, "National_HUC2List.csv")
