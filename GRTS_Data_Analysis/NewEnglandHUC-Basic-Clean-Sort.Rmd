@@ -29,6 +29,22 @@ library(feather)
 ## Path Setup ##
 
 
+library(here)
+
+STARTUP_DIR <- here()
+
+setwd("..")
+
+LOCAL_BASE_DIR <- getwd()
+DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
+
+HUC_INPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+
+input_file <- paste(HUC_INPUT_DIR,'National_HUC12List.csv', sep="")
+
+
+
 ```{r file-path-setup}
 infile <- '../DataOutput/GRTS-Data-NewEng-byHUC.pandas.xlsx'
 # infile <- '../DataOutput/TESTGRTS-Data-NewEng-byHUC.pandas.xlsx' #test

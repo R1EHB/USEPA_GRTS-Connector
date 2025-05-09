@@ -17,8 +17,19 @@
 
 ## Use stringr for string splitting function str_split
 library(stringr)
+library(here)
 
-input_file <- '../HUC-it/HUC-Data-Lists/National_HUC12List.csv'
+STARTUP_DIR <- here()
+
+setwd("..")
+
+LOCAL_BASE_DIR <- getwd()
+DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
+
+HUC_INPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+
+input_file <- paste(HUC_INPUT_DIR,'National_HUC12List.csv', sep="")
 
 GRTS_df <- read.csv(input_file, header = TRUE, sep = ",",
   colClasses=c("character","character","character","character","numeric","numeric"))
@@ -63,22 +74,22 @@ colnames(Miss_NA_df) = columns
 state_abbr_u <- c("CT MA ME NH RI VT") 
 # neighbors <- c("NY CN")
 
-New_England_HUC12s_File  <- '../HUC-it/HUC-Data-Lists/New_England_HUC12s.csv'
+New_England_HUC12s_File  <-  paste(HUC_INPUT_DIR,'New_England_HUC12s.csv', sep="")
 
 
 
 
-CT_HUCs_File <- '../HUC-it/HUC-Data-Lists/CT_HUCs.csv'
-MA_HUCs_File <- '../HUC-it/HUC-Data-Lists/MA_HUCs.csv'
-ME_HUCs_File <- '../HUC-it/HUC-Data-Lists/ME_HUCs.csv'
-NH_HUCs_File <- '../HUC-it/HUC-Data-Lists/NH_HUCs.csv'
-RI_HUCs_File <- '../HUC-it/HUC-Data-Lists/RI_HUCs.csv'
-VT_HUCs_File <- '../HUC-it/HUC-Data-Lists/VT_HUCs.csv'
+CT_HUCs_File <- paste (HUC_OUTPUT_DIR,'CT_HUCs.csv', sep="")
+MA_HUCs_File <- paste (HUC_OUTPUT_DIR,'MA_HUCs.csv', sep="")
+ME_HUCs_File <- paste (HUC_OUTPUT_DIR,'ME_HUCs.csv', sep="")
+NH_HUCs_File <- paste (HUC_OUTPUT_DIR,'NH_HUCs.csv', sep="")
+RI_HUCs_File <- paste (HUC_OUTPUT_DIR,'RI_HUCs.csv', sep="")
+VT_HUCs_File <- paste (HUC_OUTPUT_DIR,'VT_HUCs.csv', sep="")
 
-Canada_HUCs_File <- '../HUC-it/HUC-Data-Lists/CN_HUCs.csv'
-NY_HUCs_File <- '../HUC-it/HUC-Data-Lists/NY_HUCs.csv'
+Canada_HUCs_File <-  paste (HUC_OUTPUT_DIR,'CN_HUCs.csv',sep="")
+NY_HUCs_File     <-  paste (HUC_OUTPUT_DIR,'NY_HUCs.csv',sep="")
 
-Missing_NA_HUCs_File <- '../HUC-it/HUC-Data-Lists/Missing_NA__HUCs.csv'
+Missing_NA_HUCs_File <- paste(HUC_OUTPUT_DIR,'Missing_NA__HUCs.csv', sep="")
 
 ## Match and Sort Section
 
