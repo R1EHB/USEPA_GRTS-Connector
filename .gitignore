@@ -4,6 +4,10 @@
 *.Rmd~
 *.txt~
 *.md~
+*.html
+*.pdf
+
+Data_IO/*
 
 # History files
 .Rhistory

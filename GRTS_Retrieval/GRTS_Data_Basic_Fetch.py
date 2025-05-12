@@ -119,14 +119,15 @@ def get_legacy_session():
 
 G_LINE_END_DOS='\r'
 G_LINE_END_UNIX='\r\n'
-G_OUTPUT_BASE_NAME = '../DataOutput/GRTS-Data-NewEng-byHUC'
+G_OUTPUT_BASE_NAME = 'GRTS-Data-NewEng-byHUC'
+G_OUTPUT_DIR = '../Data_IO/HUC-Data-Lists/'
 # Testing vT ONLY
-# G_INPUT_HUC12_FILE = '../../HUC-it/HUC-Data-Lists/VT_HUCs.csv'
+# G_INPUT_HUC12_FILE = G_OUTPUT_DIR + 'HUC-Data-Lists/VT_HUCs.csv'
 
-G_INPUT_HUC12_FILE = '../../HUC-it/HUC-Data-Lists/New_England_HUC12s.csv'
+G_INPUT_HUC12_FILE = G_OUTPUT_DIR + 'New_England_HUC12s.csv'
 G_NORMAL_SLEEP_TIME = 0.75
 G_ERROR_SLEEP_TIME = 3
-G_HUC_PROGRESS_FILE = '../DataOutput/HUC-ProgressReport.txt'
+G_HUC_PROGRESS_FILE = G_OUTPUT_DIR + 'HUC-ProgressReport.txt'
 G_API_BASE = 'https://ordspub.epa.gov/ords/grts_rest/grts_rest_apex/grts_rest_apex/GetProjectsByHUC12/'
 G_MIN_DATE = '1987-12-31' # first year of 319 in CWA.
 # Change this as needed
@@ -168,6 +169,7 @@ class HUC12List:
             
 class GRTSDataParent:
     output_base_name = G_OUTPUT_BASE_NAME
+    output_dir = G_OUTPUT_DIR
     grts_data_by_huc = []
     grts_response_by_huc = []
     grts_status_by_huc =[]
@@ -181,7 +183,7 @@ class GRTSDataParent:
                  
         self.output_file_type = output_file_type
         self.input_huc12_data = huc12_data_list
-        self.output_file_name = self.output_base_name + '.' + self.output_file_type
+        self.output_file_name = self.output_dir + self.output_base_name + '.' + self.output_file_type
 
     def retrieve_GRTS_data (self, HUC_12_number, api_base=G_API_BASE):
         grts_response = get_legacy_session().get(api_base+HUC_12_number)
@@ -278,7 +280,7 @@ class GRTSDataPickled(GRTSDataParent):
     
     def __init__(self,output_file_type='pickled'):
         self.output_file_type=output_file_type
-        self.output_file_name = self.output_base_name + '.' + self.output_file_type
+        self.output_file_name = self.output_dir + self.output_base_name + '.' + self.output_file_type
         self.output_file = open (self.output_file_name,'wb')
 
     def dump_data_to_disk(self):
@@ -290,8 +292,9 @@ class GRTSDataPickled(GRTSDataParent):
 
 class GRTSDataJson(GRTSDataParent):
     def __init__(self,output_file_type='json'):
+        
         self.output_file_type=output_file_type
-        self.output_file_name = self.output_base_name + '.' + self.output_file_type
+        self.output_file_name = self.output_dir + self.output_base_name + '.' + self.output_file_type
         self.output_file = open (self.output_file_name,'w', encoding="utf-8")
         self.output_file.write('{ "data":')
         # print (self.output_file_name)
@@ -308,7 +311,7 @@ class GRTSDataJson(GRTSDataParent):
 class GRTSDataJsonLD(GRTSDataParent):
     def __init__(self,output_file_type='ld.json'):
         self.output_file_type=output_file_type
-        self.output_file_name = self.output_base_name + '.' + self.output_file_type
+        self.output_file_name = self.output_dir + self.output_base_name + '.' + self.output_file_type
         self.output_file = open (self.output_file_name,'w', encoding="utf-8")
         
     def write_data_2_disk(self,data_to_write):
@@ -324,7 +327,7 @@ class GRTSDataCSV(GRTSDataParent):
     def __init__(self,output_file_type='csv.txt'):
         self.output_file_type=output_file_type
         self.field_delim=';' # consider using something else, like | or \t or ¬
-        self.output_file_name = self.output_base_name + '_' + self.output_file_type
+        self.output_file_name = self.output_dir + self.output_base_name + '_' + self.output_file_type
         self.output_file = open (self.output_file_name,'w', encoding="utf-8")
         self.headr_file = open ("data-Header-Row.txt", 'r',encoding="utf-8")
         # Insert headr line into csv file
@@ -344,8 +347,8 @@ class GRTSDataCSV(GRTSDataParent):
 class GRTSPandasFrame(GRTSDataParent):
     def __init__(self,excel_output_file_type='pandas.xlsx',
                  feather_output_file_type='pandas.feather'):
-        self.excel_output_file_name = self.output_base_name + '.' + excel_output_file_type
-        self.feather_output_file_name = self.output_base_name + '.' + feather_output_file_type
+        self.excel_output_file_name = self.output_dir + self.output_base_name + '.' + excel_output_file_type
+        self.feather_output_file_name =self.output_dir +  self.output_base_name + '.' + feather_output_file_type
         self.project_level_info = []
         
         

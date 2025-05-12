@@ -28,7 +28,7 @@ library(feather)
 
 ## Path Setup ##
 
-
+```{r path-setup}
 library(here)
 
 STARTUP_DIR <- here()
@@ -43,29 +43,30 @@ HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
 
 input_file <- paste(HUC_INPUT_DIR,'National_HUC12List.csv', sep="")
 
+print (HUC_INPUT_DIR)
+print (HUC_OUTPUT_DIR)
+print (input_file)
+
+infile <- paste (HUC_INPUT_DIR,'GRTS-Data-NewEng-byHUC.pandas.xlsx', sep="")
 
 
-```{r file-path-setup}
-infile <- '../DataOutput/GRTS-Data-NewEng-byHUC.pandas.xlsx'
-# infile <- '../DataOutput/TESTGRTS-Data-NewEng-byHUC.pandas.xlsx' #test
+R_outfile <- paste (HUC_OUTPUT_DIR, 'HUC-NewEng-cleaned.Rdata', sep="")
+F_outfile <- paste (HUC_OUTPUT_DIR, 'HUC-NewEng-cleaned.feather', sep="")
+Ex_outfile <- paste (HUC_OUTPUT_DIR,'HUC-NewEng-cleaned.xlsx', sep="")
 
-R_outfile <- '../DataOutput/HUC-NewEng-cleaned.Rdata'
-F_outfile <- '../DataOutput/HUC-NewEng-cleaned.feather'
-Ex_outfile <- '../DataOutput/HUC-NewEng-cleaned.xlsx'
+Ex_out_MA <- paste (HUC_OUTPUT_DIR,'GRTS-MA.xlsx', sep="")
+Ex_out_RI <- paste (HUC_OUTPUT_DIR,'GRTS_RI.xlsx', sep="")
+Ex_out_CT <- paste (HUC_OUTPUT_DIR,'GRTS_CT.xlsx', sep="")
+Ex_out_NH <- paste (HUC_OUTPUT_DIR,'GRTS_NH.xlsx', sep="")
+Ex_out_ME <- paste (HUC_OUTPUT_DIR,'GRTS_ME.xlsx', sep="")
+Ex_out_VT <- paste (HUC_OUTPUT_DIR,'GRTS_VT.xlsx', sep="")
 
-Ex_out_MA <- '../DataOutput/GRTS-MA.xlsx'
-Ex_out_RI <- '../DataOutput/GRTS_RI.xlsx'
-Ex_out_CT <- '../DataOutput/GRTS_CT.xlsx'
-Ex_out_NH <- '../DataOutput/GRTS_NH.xlsx'
-Ex_out_ME <- '../DataOutput/GRTS_ME.xlsx'
-Ex_out_VT <- '../DataOutput/GRTS_VT.xlsx'
-
-F_out_MA <- '../DataOutput/GRTS-MA.feather'
-F_out_RI <- '../DataOutput/GRTS_RI.feather'
-F_out_CT <- '../DataOutput/GRTS_CT.feather'
-F_out_NH <- '../DataOutput/GRTS_NH.feather'
-F_out_ME <- '../DataOutput/GRTS_ME.feather'
-F_out_VT <- '../DataOutput/GRTS_VT.feather'
+F_out_MA <- paste (HUC_OUTPUT_DIR,'GRTS-MA.feather', sep="")
+F_out_RI <- paste (HUC_OUTPUT_DIR,'GRTS_RI.feather', sep="")
+F_out_CT <- paste (HUC_OUTPUT_DIR,'GRTS_CT.feather', sep="")
+F_out_NH <- paste (HUC_OUTPUT_DIR,'GRTS_NH.feather', sep="")
+F_out_ME <- paste (HUC_OUTPUT_DIR,'GRTS_ME.feather', sep="")
+F_out_VT <- paste (HUC_OUTPUT_DIR,'GRTS_VT.feather', sep="")
 
 
 # comment missing

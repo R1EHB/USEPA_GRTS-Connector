@@ -19,13 +19,26 @@ library(readr)
 library(openxlsx)
 library(feather)
 library(ggplot2)
+library(here)
+
+STARTUP_DIR <- here()
+
+setwd("..")
+
+LOCAL_BASE_DIR <- getwd()
+DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
+
+HUC_INPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
 
 
-infile <- '../DataOutput/GRTS-Data-NewEng-byHUC.pandas.xlsx'
+infile <- paste (HUC_INPUT_DIR,'GRTS-Data-NewEng-byHUC.pandas.xlsx', sep="")
 
-R_outfile <- '../DataOutput/HUC-NewEng-cleaned.Rdata'
-F_outfile <- '../DataOutput/HUC-NewEng-cleaned.feather'
-Ex_outfile <-'../DataOutput/HUC-NewEng-cleaned.xlsx'
+
+
+R_outfile <- paste (HUC_OUTPUT_DIR,'HUC-NewEng-cleaned.Rdata', sep="")
+F_outfile <-  paste (HUC_OUTPUT_DIR,'HUC-NewEng-cleaned.feather', sep="")
+Ex_outfile <- paste (HUC_OUTPUT_DIR, 'HUC-NewEng-cleaned.xlsx', sep="")
 
 GRTS_df <- read_excel(path=infile)
 
