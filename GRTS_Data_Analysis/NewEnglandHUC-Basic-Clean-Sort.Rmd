@@ -39,7 +39,7 @@ LOCAL_BASE_DIR <- getwd()
 DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
 
 HUC_INPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
-HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'GRTS-State-Data/', sep="")
 
 input_file <- paste(HUC_INPUT_DIR,'National_HUC12List.csv', sep="")
 
@@ -83,7 +83,7 @@ colnames(GRTS_df)[1] <- 'data_seq'
 # need to change these two date formats below to match upstream fixes
 ## probably ymd_hms()
 
-print (GRTS_df$project_start_date)
+# print (GRTS_df$project_start_date)
 
 GRTS_df$project_start_date <- ymd(GRTS_df$project_start_date)
 GRTS_df$project_start_date <- mdy(GRTS_df$project_start_date_text)

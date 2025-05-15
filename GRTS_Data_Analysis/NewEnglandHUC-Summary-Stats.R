@@ -29,16 +29,15 @@ LOCAL_BASE_DIR <- getwd()
 DATA_ROOT_DIR <- paste(LOCAL_BASE_DIR,'/DATA_IO/', sep="")
 
 HUC_INPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
-HUC_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'HUC-Data-Lists/', sep="")
+ANALYTIC_DATA_OUTPUT_DIR <- paste (DATA_ROOT_DIR,'GRTS-Analysis-Output/', sep="")
 
 
 infile <- paste (HUC_INPUT_DIR,'GRTS-Data-NewEng-byHUC.pandas.xlsx', sep="")
 
 
-
-R_outfile <- paste (HUC_OUTPUT_DIR,'HUC-NewEng-cleaned.Rdata', sep="")
-F_outfile <-  paste (HUC_OUTPUT_DIR,'HUC-NewEng-cleaned.feather', sep="")
-Ex_outfile <- paste (HUC_OUTPUT_DIR, 'HUC-NewEng-cleaned.xlsx', sep="")
+R_outfile <- paste (ANALYTIC_DATA_OUTPUT_DIR,'HUC-NewEng-cleaned.Rdata', sep="")
+F_outfile <-  paste (ANALYTIC_DATA_OUTPUT_DIR,'HUC-NewEng-cleaned.feather', sep="")
+Ex_outfile <- paste (ANALYTIC_DATA_OUTPUT_DIR, 'HUC-NewEng-cleaned.xlsx', sep="")
 
 GRTS_df <- read_excel(path=infile)
 
@@ -83,6 +82,10 @@ x_end <- year (ymd(20260101))
 year_date <- year(GRTS_df$project_start_date)
 
 GRTS_df$year_date <- year_date
+
+## Plot Output Dir
+
+setwd(ANALYTIC_DATA_OUTPUT_DIR)
 
 plot(year_date,GRTS_df$n_lbsyr,log="y",xlim=c(x_origin, x_end),
      ylim=c(0.1,110000), main="lbs N per Year Reduced log10",
