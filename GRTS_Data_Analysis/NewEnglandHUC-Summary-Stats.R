@@ -52,7 +52,10 @@ colnames(GRTS_df)[1] <- 'data_seq'
 
 ## Key type Conversions
 
-GRTS_df$project_start_date <- mdy(GRTS_df$project_start_date)
+GRTS_df$project_start_date <- as.Date(GRTS_df$project_start_date,
+                                format="%Y-%m-%d %tz")
+
+# print (GRTS_df$project_start_date)
 
 
 GRTS_df$n_lbsyr <- as.numeric(GRTS_df$n_lbsyr)
@@ -76,20 +79,21 @@ print (min (GRTS_df$n_lbsyr, na.rm=TRUE))
 print (min (GRTS_df$p_lbsyr, na.rm=TRUE))
 print (min (GRTS_df$sed_tonsyr, na.rm=TRUE))
 
-x_origin <- year (ymd(19960101))
-x_end <- year (ymd(20260101))
+x_origin <- ymd(19960101)
+x_end <- ymd(20260101)
 
-year_date <- year(GRTS_df$project_start_date)
+## year_date <- year(GRTS_df$project_start_date)
+ps_date <- GRTS_df$project_start_date
 
-GRTS_df$year_date <- year_date
+
 
 ## Plot Output Dir
 
 setwd(ANALYTIC_DATA_OUTPUT_DIR)
 
-plot(year_date,GRTS_df$n_lbsyr,log="y",xlim=c(x_origin, x_end),
+plot(ps_date,GRTS_df$n_lbsyr,log="y",xlim=c(x_origin, x_end),
      ylim=c(0.1,110000), main="lbs N per Year Reduced log10",
-     xlab="Year", ylab= "lbs N")
+     xlab="Proj Start Date (Year)", ylab= "lbs N")
 
 # head(GRTS_df[,27:34])
 
@@ -105,9 +109,9 @@ hist (log10(GRTS_df$n_lbsyr), main="N Reductions lbs / Year Per Project Histogra
 # boxplot (GRTS_df$n_lbsyr, main ="N boxplot")
 
 
-plot(year_date,GRTS_df$p_lbsyr,log="y",xlim=c(x_origin, x_end),
+plot(ps_date,GRTS_df$p_lbsyr,log="y",xlim=c(x_origin, x_end),
      ylim=c(0.1,110000), main="lbs P per Year Reduced log10",
-     xlab="Year", ylab= "lbs P")
+     xlab="Proj Start Date (Year)", ylab= "lbs P")
 
 ggplot (data=subset(GRTS_df,p_lbsyr>0.000001), aes(y=log10(p_lbsyr), x=approp_year)) +
     geom_point(aes(color=state)) +xlim (1996,2025) +
@@ -120,9 +124,9 @@ hist (log10(GRTS_df$p_lbsyr), main="P Reductions lbs / Year Per Project Histogra
 
 # boxplot (GRTS_df$p_lbsyr, main ="P boxplot")
 
-plot(year_date,GRTS_df$sed_tonsyr,log="y",xlim=c(x_origin, x_end),
+plot(ps_date,GRTS_df$sed_tonsyr,log="y",# xlim=c(x_origin, x_end),
      ylim=c(0.1,110000), main="Tons Sediment per Year Reduced log10",
-     xlab="Year", ylab= "Tons Sediment")
+     xlab="Proj Start Date (Year)", ylab= "Tons Sediment")
 
 ggplot (data=subset(GRTS_df,sed_tonsyr>0.000001), aes(y=log10(sed_tonsyr), x=approp_year)) +
     geom_point(aes(color=state)) +xlim (1996,2025) +
