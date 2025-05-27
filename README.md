@@ -39,13 +39,18 @@ In typical use sequence, they are:
 ## WBD_Retrieval_HUC_Extraction ##
 The R code to pull the HUC information from the USGS spatial dataset,
 and add in the older, deprecated HUC numbers.
+* USGS_WBD_Retrieve_Process.Rmd
+* HUC12_State_Sorter-New-England.R
+
 
 ## GRTS_Retrieval ##
 The Python code
+* GRTS_Data_Basic_Fetch.py
 
 ## GRTS_Data_Analysis ##
 The R code to 
-
+* NewEnglandHUC-Basic-Clean-Sort.Rmd
+* NewEnglandHUC-Summary-Stats.R
 
 # Computer Languages Used #
 
